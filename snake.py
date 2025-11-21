@@ -1,6 +1,7 @@
-import pygame
 import random
 import sys
+
+import pygame
 
 # ----------------------------
 # Konfigurasi dasar
@@ -23,6 +24,7 @@ DOWN = (0, BLOCK_SIZE)
 LEFT = (-BLOCK_SIZE, 0)
 RIGHT = (BLOCK_SIZE, 0)
 
+
 def init_snake():
     # Posisi awal di tengah, disejajarkan ke grid
     start_x = WIDTH // 2
@@ -38,6 +40,7 @@ def init_snake():
     ]
     direction = RIGHT
     return snake, direction
+
 
 def spawn_food(snake):
     snake_set = set(snake)
@@ -56,8 +59,10 @@ def spawn_food(snake):
         return None  # Tidak ada tempat (menang)
     return random.choice(free_cells)
 
+
 def is_opposite(dir_a, dir_b):
     return dir_a[0] == -dir_b[0] and dir_a[1] == -dir_b[1]
+
 
 def draw_grid(surface):
     # Opsional: grid visual
@@ -66,17 +71,24 @@ def draw_grid(surface):
     for y in range(0, HEIGHT, BLOCK_SIZE):
         pygame.draw.line(surface, GRAY, (0, y), (WIDTH, y), 1)
 
+
 def draw_snake(surface, snake):
     # Kepala dan tubuh berbeda warna agar jelas
     if snake:
         head = snake[0]
         pygame.draw.rect(surface, GREEN, (head[0], head[1], BLOCK_SIZE, BLOCK_SIZE))
     for segment in snake[1:]:
-        pygame.draw.rect(surface, DARK_GREEN, (segment[0], segment[1], BLOCK_SIZE, BLOCK_SIZE))
+        pygame.draw.rect(
+            surface, DARK_GREEN, (segment[0], segment[1], BLOCK_SIZE, BLOCK_SIZE)
+        )
+
 
 def draw_food(surface, food_pos):
     if food_pos is not None:
-        pygame.draw.rect(surface, RED, (food_pos[0], food_pos[1], BLOCK_SIZE, BLOCK_SIZE))
+        pygame.draw.rect(
+            surface, RED, (food_pos[0], food_pos[1], BLOCK_SIZE, BLOCK_SIZE)
+        )
+
 
 def render_text(surface, text, font, color, pos, center=False):
     img = font.render(text, True, color)
@@ -86,6 +98,7 @@ def render_text(surface, text, font, color, pos, center=False):
     else:
         rect.topleft = pos
     surface.blit(img, rect)
+
 
 def game_loop(screen, clock, font, big_font):
     snake, direction = init_snake()
@@ -155,6 +168,7 @@ def game_loop(screen, clock, font, big_font):
         render_text(screen, f"Score: {score}", font, WHITE, (10, 8))
         pygame.display.flip()
 
+
 def show_end_screen(screen, big_font, font, status, score):
     screen.fill(BLACK)
     if status == "win":
@@ -162,9 +176,25 @@ def show_end_screen(screen, big_font, font, status, score):
     else:
         title = "Game Over!"
 
-    render_text(screen, title, big_font, WHITE, (WIDTH // 2, HEIGHT // 2 - 40), center=True)
-    render_text(screen, f"Score: {score}", font, WHITE, (WIDTH // 2, HEIGHT // 2 + 10), center=True)
-    render_text(screen, "Press Enter to Play Again, Esc to Quit", font, WHITE, (WIDTH // 2, HEIGHT // 2 + 40), center=True)
+    render_text(
+        screen, title, big_font, WHITE, (WIDTH // 2, HEIGHT // 2 - 40), center=True
+    )
+    render_text(
+        screen,
+        f"Score: {score}",
+        font,
+        WHITE,
+        (WIDTH // 2, HEIGHT // 2 + 10),
+        center=True,
+    )
+    render_text(
+        screen,
+        "Press Enter to Play Again, Esc to Quit",
+        font,
+        WHITE,
+        (WIDTH // 2, HEIGHT // 2 + 40),
+        center=True,
+    )
     pygame.display.flip()
 
     while True:
@@ -176,6 +206,7 @@ def show_end_screen(screen, big_font, font, status, score):
                     return "restart"
                 if event.key == pygame.K_ESCAPE:
                     return "quit"
+
 
 def main():
     pygame.init()
@@ -200,6 +231,7 @@ def main():
 
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     main()
